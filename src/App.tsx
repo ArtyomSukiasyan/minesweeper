@@ -1,24 +1,79 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import Board from "./components/Board/Board";
+import calcOpenedSquares from "./helpers/calcOpenedSquares";
+import { generateAgain, generateNewGame, X } from "./constants/strings";
+import styles from "./App.module.css";
 
 function App() {
+  const [bombs, setBombs] = useState<any>([]);
+  const [visited, setVisited] = useState<any>([]);
+  const [isFinished, setIsFinished] = useState(false);
+
+  const generateBombs = (): void => {
+    let bombArr = Array(10)
+      .fill(0)
+      .map(() => Array(10).fill(0));
+
+    for (let i = 0; i < bombArr.length; i++) {
+      let bombPos = Math.floor(Math.random() * 10);
+      bombArr[i][bombPos] = X;
+    }
+
+    bombArr = calcOpenedSquares(bombArr);
+
+    setBombs(bombArr);
+
+    let cover = Array(10)
+      .fill(0)
+      .map(() => Array(10).fill(0));
+
+    setVisited(cover);
+  };
+
+  const dfsCells = (i: number, j: number): void => {
+    const isCheckedSquare = visited[i][j] === 1 || bombs[i][j] === X;
+    const isOutsideFromBoard =
+      i < 0 || i > visited.length - 1 || j < 0 || j > visited[0].length - 1;
+
+    if (isCheckedSquare || isOutsideFromBoard) {
+      return;
+    }
+
+    visited[i][j] = 1;
+
+    setVisited([...visited]);
+
+    if (bombs[i][j] < 1) {
+      dfsCells(i + 1, j);
+      dfsCells(i - 1, j);
+      dfsCells(i, j + 1);
+      dfsCells(i, j - 1);
+    }
+  };
+
+  const visitCell = (i: number, j: number): void => {
+    if (bombs[i][j] === X || isFinished) {
+      setIsFinished(true);
+      alert(generateAgain);
+
+      return;
+    }
+
+    dfsCells(i, j);
+
+    visited[i][j] = 1;
+    setVisited([...visited]);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={styles.Minesweeper}>
+      <div className={styles.Minesweeper_header}>
+        <div className={styles.title}> Minesweeper </div>
+        <Board bombs={bombs} visited={visited} visitCell={visitCell} />
+        <button className={styles.generate} onClick={generateBombs}>
+          {generateNewGame}
+        </button>
+      </div>
     </div>
   );
 }

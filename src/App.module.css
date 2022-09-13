@@ -1,0 +1,29 @@
+.Minesweeper {
+  text-align: center;
+}
+
+.Minesweeper_header {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: calc(10px + 2vmin);
+  background-color: #282c34;
+  color: white;
+}
+
+.title {
+  font-size: 44px;
+  cursor: pointer;
+}
+
+.generate {
+  width: 150px;
+  padding: 8px;
+  border: 2px solid white;
+  border-radius: 8px;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+}
