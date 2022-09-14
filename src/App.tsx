@@ -10,6 +10,8 @@ function App() {
   const [isFinished, setIsFinished] = useState(false);
 
   const generateBombs = (): void => {
+    setIsFinished(false);
+    
     let bombArr = Array(10)
       .fill(0)
       .map(() => Array(10).fill(0));
