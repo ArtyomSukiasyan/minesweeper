@@ -11,27 +11,7 @@ export default function calcOpenedSquares(bombArr: IBombArr): IBombArr {
           sum++;
         }
 
-        if (i < bombArr.length - 1 && bombArr[i + 1][j] === X) {
-          sum++;
-        }
-
-        if (j < bombArr.length - 1 && bombArr[i][j + 1] === X) {
-          sum++;
-        }
-
         if (j > 0 && bombArr[i][j - 1] === X) {
-          sum++;
-        }
-
-        if (i < bombArr.length - 1 && j > 0 && bombArr[i + 1][j - 1] === X) {
-          sum++;
-        }
-
-        if (
-          i < bombArr.length - 1 &&
-          j < bombArr.length - 1 &&
-          bombArr[i + 1][j + 1] === X
-        ) {
           sum++;
         }
 
@@ -39,7 +19,26 @@ export default function calcOpenedSquares(bombArr: IBombArr): IBombArr {
           sum++;
         }
 
-        if (i > 0 && j < bombArr.length - 1 && bombArr[i - 1][j + 1] === X) {
+        const isLastRow = i < bombArr.length - 1;
+        const isLastColumn = j < bombArr.length - 1;
+
+        if (isLastRow && bombArr[i + 1][j] === X) {
+          sum++;
+        }
+
+        if (isLastColumn && bombArr[i][j + 1] === X) {
+          sum++;
+        }
+
+        if (isLastRow && j > 0 && bombArr[i + 1][j - 1] === X) {
+          sum++;
+        }
+
+        if (isLastRow && isLastColumn && bombArr[i + 1][j + 1] === X) {
+          sum++;
+        }
+
+        if (i > 0 && isLastColumn && bombArr[i - 1][j + 1] === X) {
           sum++;
         }
 

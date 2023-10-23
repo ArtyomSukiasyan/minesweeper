@@ -1,23 +1,23 @@
 import { useState } from "react";
 import Board from "./components/Board/Board";
 import calcOpenedSquares from "./helpers/calcOpenedSquares";
-import { generateAgain, generateNewGame, X } from "./constants/strings";
+import { generateAgain, generateNewGame, title, X } from "./constants/strings";
 import styles from "./App.module.css";
 
 function App() {
-  const [bombs, setBombs] = useState<any>([]);
-  const [visited, setVisited] = useState<any>([]);
+  const [bombs, setBombs] = useState<(number | string)[][]>([]);
+  const [visited, setVisited] = useState<number[][]>([]);
   const [isFinished, setIsFinished] = useState(false);
 
   const generateBombs = (): void => {
     setIsFinished(false);
-    
+
     let bombArr = Array(10)
       .fill(0)
       .map(() => Array(10).fill(0));
 
     for (let i = 0; i < bombArr.length; i++) {
-      let bombPos = Math.floor(Math.random() * 10);
+      const bombPos = Math.floor(Math.random() * 10);
       bombArr[i][bombPos] = X;
     }
 
@@ -25,7 +25,7 @@ function App() {
 
     setBombs(bombArr);
 
-    let cover = Array(10)
+    const cover = Array(10)
       .fill(0)
       .map(() => Array(10).fill(0));
 
@@ -70,7 +70,7 @@ function App() {
   return (
     <div className={styles.Minesweeper}>
       <div className={styles.Minesweeper_header}>
-        <div className={styles.title}> Minesweeper </div>
+        <div className={styles.title}>{title}</div>
         <Board bombs={bombs} visited={visited} visitCell={visitCell} />
         <button className={styles.generate} onClick={generateBombs}>
           {generateNewGame}

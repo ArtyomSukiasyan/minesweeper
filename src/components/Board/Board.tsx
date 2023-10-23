@@ -5,9 +5,9 @@ import styles from "./Board.module.css";
 export default function Board({ bombs, visited, visitCell }: IBoard) {
   return (
     <div className={styles.board}>
-      {bombs.map((arr: any[], index: number) => (
+      {bombs.map((arr: (number | string)[], index: number) => (
         <div key={index}>
-          {arr.map((elem: any[], i: number) => (
+          {arr.map((_: number | string, i: number) => (
             <span
               key={i}
               onClick={() => visitCell(index, i)}
@@ -18,15 +18,15 @@ export default function Board({ bombs, visited, visitCell }: IBoard) {
                     : styles.visitStyle
                 }`}
             >
-              {visited[index][i] === 0
-                ? null
-                : bombs[index][i] === 0
-                ? emptyString
-                : bombs[index][i]}
+              {getSquareValue(visited[index][i], bombs[index][i])}
             </span>
           ))}
         </div>
       ))}
     </div>
   );
+}
+
+function getSquareValue(visited: string | number, bombs: string | number) {
+  return visited === 0 ? null : bombs === 0 ? emptyString : bombs;
 }
